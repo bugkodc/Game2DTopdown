@@ -11,10 +11,15 @@ public class Door : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private BoxCollider2D boxCollider;
     private @_2TopDown inputManager;
+    public Player player;
 
+    private void Start()
+    {
+        
+    }
     private void Update()
     {
-     
+        
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

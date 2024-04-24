@@ -37,9 +37,27 @@ public partial class @_2TopDown: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""OpenDoor"",
+                    ""name"": ""Tools"",
                     ""type"": ""Button"",
                     ""id"": ""d25c2856-27dd-4163-889c-bc721f7ced8e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Inventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""35ee0b51-0b8e-409b-992d-90c833da2a60"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Talk"",
+                    ""type"": ""Button"",
+                    ""id"": ""d1b5c77e-fe50-413d-88c5-6ca1d38143fb"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -109,7 +127,29 @@ public partial class @_2TopDown: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""OpenDoor"",
+                    ""action"": ""Tools"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1a623fde-8f25-42c9-a4d8-ffac56af76c4"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""24f6a3dd-66cf-45df-b9c6-10967eecf44a"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Talk"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -698,7 +738,9 @@ public partial class @_2TopDown: IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
-        m_Player_OpenDoor = m_Player.FindAction("OpenDoor", throwIfNotFound: true);
+        m_Player_Tools = m_Player.FindAction("Tools", throwIfNotFound: true);
+        m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
+        m_Player_Talk = m_Player.FindAction("Talk", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -773,13 +815,17 @@ public partial class @_2TopDown: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Move;
-    private readonly InputAction m_Player_OpenDoor;
+    private readonly InputAction m_Player_Tools;
+    private readonly InputAction m_Player_Inventory;
+    private readonly InputAction m_Player_Talk;
     public struct PlayerActions
     {
         private @_2TopDown m_Wrapper;
         public PlayerActions(@_2TopDown wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
-        public InputAction @OpenDoor => m_Wrapper.m_Player_OpenDoor;
+        public InputAction @Tools => m_Wrapper.m_Player_Tools;
+        public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
+        public InputAction @Talk => m_Wrapper.m_Player_Talk;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -792,9 +838,15 @@ public partial class @_2TopDown: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
-            @OpenDoor.started += instance.OnOpenDoor;
-            @OpenDoor.performed += instance.OnOpenDoor;
-            @OpenDoor.canceled += instance.OnOpenDoor;
+            @Tools.started += instance.OnTools;
+            @Tools.performed += instance.OnTools;
+            @Tools.canceled += instance.OnTools;
+            @Inventory.started += instance.OnInventory;
+            @Inventory.performed += instance.OnInventory;
+            @Inventory.canceled += instance.OnInventory;
+            @Talk.started += instance.OnTalk;
+            @Talk.performed += instance.OnTalk;
+            @Talk.canceled += instance.OnTalk;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -802,9 +854,15 @@ public partial class @_2TopDown: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
-            @OpenDoor.started -= instance.OnOpenDoor;
-            @OpenDoor.performed -= instance.OnOpenDoor;
-            @OpenDoor.canceled -= instance.OnOpenDoor;
+            @Tools.started -= instance.OnTools;
+            @Tools.performed -= instance.OnTools;
+            @Tools.canceled -= instance.OnTools;
+            @Inventory.started -= instance.OnInventory;
+            @Inventory.performed -= instance.OnInventory;
+            @Inventory.canceled -= instance.OnInventory;
+            @Talk.started -= instance.OnTalk;
+            @Talk.performed -= instance.OnTalk;
+            @Talk.canceled -= instance.OnTalk;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -988,7 +1046,9 @@ public partial class @_2TopDown: IInputActionCollection2, IDisposable
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
-        void OnOpenDoor(InputAction.CallbackContext context);
+        void OnTools(InputAction.CallbackContext context);
+        void OnInventory(InputAction.CallbackContext context);
+        void OnTalk(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

@@ -10,12 +10,12 @@ public class Player : MonoBehaviour
     private Vector2 movementVector;
     [SerializeField] private Rigidbody2D rigidbody2D;
     [SerializeField] private Animator animator;
-
+    public Vector2 lastVelocity;
     private void Awake()
     {
        rigidbody2D = GetComponent<Rigidbody2D>();
-       inputManager = new @_2TopDown();
-       animator = GetComponent<Animator>();
+       inputManager = new @_2TopDown(); 
+       animator = GetComponent<Animator>(); 
     }
     private void OnEnable()
     {
@@ -36,18 +36,20 @@ public class Player : MonoBehaviour
     private void Move() 
     {
 
-        rigidbody2D.MovePosition(rigidbody2D.position + movementVector * (moveSpeed * Time.fixedDeltaTime));
+        rigidbody2D.MovePosition(rigidbody2D.position + movementVector * (moveSpeed * Time.fixedDeltaTime)); 
         transform.localScale =  new Vector3(movementVector.x >= 0 ? 1 : -1, 1,1);
         AnimationPlayer();
     }
     private void AnimationPlayer()
     {
-        animator.SetFloat("velocityX", movementVector.x);
+        animator.SetFloat("velocityX", movementVector.x );
         animator.SetFloat("velocityY", movementVector.y);
         if(movementVector.x != 0|| movementVector.y != 0)
         {
-            animator.SetFloat("lastVelocityX", movementVector.x);
+            lastVelocity = new Vector2(movementVector.x, movementVector.y).normalized;
+            animator.SetFloat("lastVelocityX", movementVector.x);          
             animator.SetFloat("lastVelocityY" , movementVector.y);
+           
         }
     }
    
